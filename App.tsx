@@ -16,7 +16,7 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Geolocation from 'react-native-geolocation-service';
 
-const GOOGLE_PLACES_API_KEY = 'AIzaSyDeq_XxhcT5twgSAZ8Y5fBt_iSSfQCsw1o';
+const GOOGLE_PLACES_API_KEY = 'GOOGLE_API_KEY';
 
 
 
@@ -64,14 +64,14 @@ const gps = require('./markers/gps_2.png')
 
 
 MapboxGL.setAccessToken(
-  'pk.eyJ1IjoiaGFuaXllaG5hc3NlcmkiLCJhIjoiY2tlNGExNXl5MGswdzJ2cG91dmh0NngxZiJ9.mQa0lptrjcnryIMyeW9uuA',
+  'MAPBOX_API_KEY',
 );
 
 
 
 const rasterSourceProps = {
   id: 'iranMap',
-  tileUrlTemplates: ['http://94.184.208.42/hot/{z}/{x}/{y}.png'],
+  tileUrlTemplates: ['TILE_SERVER_URL'],
   tileSize: 256,
   
   
@@ -248,7 +248,7 @@ class App extends React.Component <{}>{
           <View style={{position: "absolute", margin:"3%", top:0, justifyContent: 'center', width:"94%", overflow:"hidden", borderRadius:12, opacity:0.8}} >
             
             <TextInput placeholder="جست و جو"  selectionColor="black" placeholderTextColor="#666666" style={{ width:"100%", backgroundColor:"white", direction:"rtl", textAlign: "right", paddingRight:10, fontFamily: 'BHoma'}} 
-                onChangeText={(text)=>{(text.length > 4) ? fetch("http://94.184.208.43/nominatim/search.php?format=json&addressdetails=1&q={$" + String(text) + "}&format=json&limit=5")
+                onChangeText={(text)=>{(text.length > 4) ? fetch("http://NOMINATIM_SERVER/nominatim/search.php?format=json&addressdetails=1&q={$" + String(text) + "}&format=json&limit=5")
                 .then((response) => response.json())
                 .then((responseJson) => {
                     console.log(responseJson)
