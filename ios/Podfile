@@ -3,6 +3,9 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
+pod 'react-native-mapbox-gl', :path => '../node_modules/@react-native-mapbox-gl/maps'
+pod 'react-native-geolocation-service', path: '../node_modules/react-native-geolocation-service'
+
 target 'app100' do
   config = use_native_modules!
 

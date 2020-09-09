@@ -1,0 +1,191 @@
+{
+  "version": 8,
+  "name": "Styles",
+  "light": { "color": "hsl(0, 100%, 55%)", "anchor": "map" },
+  "sources": {
+    "mapbox": {
+      "url": "mapbox://mapbox.mapbox-streets-v7",
+      "type": "vector"
+    },
+    "bing": {
+      "tiles": [
+        "http://ecn.t0.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=6751&key=AltHaSEwerACQmiAvXUEjjqsadBRImVtBt8PnVDtep86P2l4KBhaiqIlKNhLIpi0s3623"
+      ],
+      "type": "raster",
+      "tileSize": 256
+    }
+  },
+  "sprite": "mapbox://sprites/mapbox/streets-v10",
+  "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": {
+        "background-color": "hsla(0, 0%, 0%, 0)"
+      }
+    },
+    {
+      "id": "satellite",
+      "type": "raster",
+      "source": "bing",
+      "layout": {},
+      "paint": {
+        "raster-saturation": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          0,
+          -1,
+          7,
+          -1,
+          8,
+          -0.3,
+          22,
+          -0.3
+        ]
+      }
+    },
+    {
+      "layout": { "line-join": "bevel" },
+      "filter": ["all", ["==", "maritime", 0], [">=", "admin_level", 3]],
+      "type": "line",
+      "source": "mapbox",
+      "id": "admin-3-4-boundaries-bg",
+      "paint": {
+        "line-blur": 0,
+        "line-width": 1,
+        "line-opacity": 1,
+        "line-dasharray": [1, 0],
+        "line-translate": [0, 0],
+        "line-color": "hsl(0, 0%, 10%)"
+      },
+      "source-layer": "admin"
+    },
+    {
+      "minzoom": 1,
+      "layout": { "line-join": "miter" },
+      "filter": ["all", ["==", "admin_level", 2], ["==", "maritime", 0]],
+      "type": "line",
+      "source": "mapbox",
+      "id": "admin-2-boundaries-bg",
+      "paint": {
+        "line-width": 1,
+        "line-color": "hsl(0, 0%, 10%)",
+        "line-opacity": {
+          "base": 1,
+          "stops": [
+            [3, 0],
+            [4, 0.5]
+          ]
+        },
+        "line-translate": [0, 0],
+        "line-blur": {
+          "base": 1,
+          "stops": [
+            [3, 0],
+            [10, 2]
+          ]
+        }
+      },
+      "source-layer": "admin"
+    },
+    {
+      "layout": { "line-join": "round", "line-cap": "round" },
+      "filter": ["all", ["==", "maritime", 0], [">=", "admin_level", 3]],
+      "type": "line",
+      "source": "mapbox",
+      "id": "admin-3-4-boundaries",
+      "paint": {
+        "line-dasharray": {
+          "base": 1,
+          "stops": [
+            [6, [2, 0]],
+            [7, [2, 2, 6, 2]]
+          ]
+        },
+        "line-width": 1,
+        "line-opacity": {
+          "base": 1,
+          "stops": [
+            [2, 0],
+            [3, 1]
+          ]
+        },
+        "line-color": "hsl(0, 0%, 10%)"
+      },
+      "source-layer": "admin"
+    },
+    {
+      "minzoom": 1,
+      "layout": { "line-join": "round", "line-cap": "round" },
+      "filter": [
+        "all",
+        ["==", "admin_level", 2],
+        ["==", "disputed", 0],
+        ["==", "maritime", 0]
+      ],
+      "type": "line",
+      "source": "mapbox",
+      "id": "admin-2-boundaries",
+      "paint": { "line-color": "hsl(0, 0%, 10%)", "line-width": 1 },
+      "source-layer": "admin"
+    },
+    {
+      "minzoom": 1,
+      "layout": { "line-join": "round" },
+      "filter": [
+        "all",
+        ["==", "admin_level", 2],
+        ["==", "disputed", 1],
+        ["==", "maritime", 0]
+      ],
+      "type": "line",
+      "source": "mapbox",
+      "id": "admin-2-boundaries-dispute",
+      "paint": {
+        "line-dasharray": [1.5, 1.5],
+        "line-color": "hsl(0, 0%, 10%)",
+        "line-width": 1
+      },
+      "source-layer": "admin"
+    },
+    {
+      "id": "placeholder",
+      "filter": ["none"],
+      "type": "line",
+      "source": "mapbox",
+      "source-layer": "admin"
+    },
+    {
+      "id": "country-label",
+      "type": "symbol",
+      "source": "mapbox",
+      "source-layer": "country_label",
+      "layout": {
+        "text-field": ["coalesce", ["get", "name_en"], ["get", "name"]],
+        "text-size": 11
+      },
+      "paint": {
+        "text-color": "hsl(0, 0%, 100%)",
+        "text-halo-color": "#000000",
+        "text-halo-width": 1.2
+      }
+    },
+    {
+      "id": "country-label (1)",
+      "type": "symbol",
+      "source": "mapbox",
+      "source-layer": "place_label",
+      "layout": {
+        "text-size": 10,
+        "text-field": ["coalesce", ["get", "name_en"], ["get", "name"]]
+      },
+      "paint": {
+        "text-color": "hsl(0, 0%, 100%)",
+        "text-halo-color": "hsla(0, 0%, 0%, 0.75)",
+        "text-halo-width": 1
+      }
+    }
+  ]
+}

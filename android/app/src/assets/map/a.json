@@ -1,0 +1,29 @@
+{
+  "version": 8,
+  "name": "Raster Tiles",
+  "sources": {
+      "map": {
+          "type": "raster",
+          "tileURLTemplates": ["http://94.184.208.42/hot/{z}/{x}/{y}.png"]
+      }
+  },
+  "layers": [
+      {
+          "id": "background",
+          "type": "background",
+          "paint": {
+              "background-color": "#f2efea"
+          }
+
+      },
+      {
+          "id": "map",
+          "type": "raster",
+          "source": "map",
+          "paint": {
+              "raster-fade-duration": 100
+          }
+      }
+  ]
+
+}
