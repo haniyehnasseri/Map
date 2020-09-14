@@ -64,14 +64,14 @@ const gps = require('./markers/gps_2.png')
 
 
 MapboxGL.setAccessToken(
-  'MAPBOX_API_KEY',
+  'MAPBOX_KEY',
 );
 
 
 
 const rasterSourceProps = {
   id: 'iranMap',
-  tileUrlTemplates: ['TILE_SERVER_URL'],
+  tileUrlTemplates: ['OSM_TILE_SERVER'],
   tileSize: 256,
   
   
@@ -142,39 +142,25 @@ class App extends React.Component <{}>{
           (position) => {
             const latitude = JSON.stringify(position.coords.latitude)
             const longitude = JSON.stringify(position.coords.longitude)
-            //console.log("1")
-            //const needRender = true
             this.setState({
               latitude : latitude,
               longitude : longitude,
-              //needRender
+              
             })
           },
           (error) => {
-            // See error code charts below.
             console.log(error.code, error.message);
           },
           { enableHighAccuracy: true, timeout: 3000, maximumAge: 40000 }
       );
       } else {
-        /*const latitude = 35.802071
-        const longitude = 51.490461
-        const needRender = true
-        this.setState({
-          latitude,
-          longitude,
-          needRender
-        });*/
-  
       }
     } catch (err) {
       console.warn(err);
     }
-    //this.forceUpdate
     
   }
 
-  
   async componentDidMount(){
     await this.requestCameraPermission()
   }
@@ -201,7 +187,6 @@ class App extends React.Component <{}>{
           focusable={true}
           pitchEnabled={true}
           onLongPress={(feautre)=>Alert.alert('مختصات : ' + '\n' +  String( feautre.geometry.coordinates))}
-          //onLongPress = {(feautre)=> {this.setState({})}}
           onPress = {()=>this.setState({searchResult: []})}          
           >
             <MapboxGL.RasterSource {...rasterSourceProps} >
@@ -216,7 +201,8 @@ class App extends React.Component <{}>{
                   />                  
             </MapboxGL.RasterSource>
   
-            <MapboxGL.Camera ref={this.cameraRef} followUserLocation={false} zoomLevel={17} centerCoordinate={[Number(this.state.longitude),Number(this.state.latitude)]} animationMode={'flyTo'} animationDuration={1000}/>
+            <MapboxGL.Camera ref={this.cameraRef} followUserLocation={false} zoomLevel={17} 
+            centerCoordinate={[Number(this.state.longitude),Number(this.state.latitude)]} animationMode={'flyTo'} animationDuration={1000}/>
             
             <MapboxGL.MarkerView
               ref={this.markerRef}
@@ -236,9 +222,7 @@ class App extends React.Component <{}>{
             >
               <Image source={searchMarker}/>
             </MapboxGL.MarkerView>}
-
-            
-                        
+                                   
           </MapboxGL.MapView>
 
           <View  style = {styles.button} onTouchStart={()=>this.requestCameraPermission().then(()=>this.cameraRef.current?.flyTo([this.state.longitude,this.state.latitude],1000))} >
@@ -247,8 +231,9 @@ class App extends React.Component <{}>{
 
           <View style={{position: "absolute", margin:"3%", top:0, justifyContent: 'center', width:"94%", overflow:"hidden", borderRadius:12, opacity:0.8}} >
             
-            <TextInput placeholder="جست و جو"  selectionColor="black" placeholderTextColor="#666666" style={{ width:"100%", backgroundColor:"white", direction:"rtl", textAlign: "right", paddingRight:10, fontFamily: 'BHoma'}} 
-                onChangeText={(text)=>{(text.length > 4) ? fetch("http://NOMINATIM_SERVER/nominatim/search.php?format=json&addressdetails=1&q={$" + String(text) + "}&format=json&limit=5")
+            <TextInput placeholder="جست و جو"  selectionColor="black" placeholderTextColor="#666666" 
+            style={{ width:"100%", backgroundColor:"white", direction:"rtl", textAlign: "right", paddingRight:10, fontFamily: 'BHoma'}} 
+                onChangeText={(text)=>{(text.length > 4) ? fetch("NOMINATIM_SERVER/search.php?format=json&addressdetails=1&q={$" + String(text) + "}&format=json&limit=5")
                 .then((response) => response.json())
                 .then((responseJson) => {
                     console.log(responseJson)
@@ -274,7 +259,8 @@ class App extends React.Component <{}>{
                     {item.address.city + " ، " + (item.address.suburb || item.address.district) + (item.address.neighbourhood ? (" ، " + item.address.neighbourhood) : '')}
                   </Text>
                   </View>
-                </TouchableOpacity>) : (<TouchableOpacity onPress={()=>this.cameraRef.current?.flyTo([item.lon,item.lat],1000)} onPressOut={()=>this.setState({searchResult: [],searchedLatitude: item.lat, searchedLongitude: item.lon})}>
+                </TouchableOpacity>) : (<TouchableOpacity onPress={()=>this.cameraRef.current?.flyTo([item.lon,item.lat],1000)} 
+                  onPressOut={()=>this.setState({searchResult: [],searchedLatitude: item.lat, searchedLongitude: item.lon})}>
                   <View style={{padding: 4.5, borderBottomWidth: 0.25, borderBottomColor: 'rgba(0,0,0,0.2)', backgroundColor:'#F8F8FF' }}>
                   <Text style={{fontFamily:'BHoma'}}>
                       {item.display_name}
